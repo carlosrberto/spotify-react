@@ -1,9 +1,15 @@
 html {
-    box-sizing(border-box);
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 body{
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 h1{
@@ -11,13 +17,25 @@ h1{
 }
 
 .similar-artsts{
-    width: 960px;
+    max-width: 960px;
     margin: 0 auto;
 }
 
+@media screen and (max-width: 460px) {
+    h1{
+        font-size: 22px;
+    }
+
+    .similar-artsts {
+        padding: 0 20px;
+    }
+}
+
 .similar-artsts input[type="text"]{
+    box-sizing(border-box);
     display: block;
-    width: 400px;
+    width: 100%;
+    /*max-width: 400px;*/
     margin: 0 auto 20px;
     padding: 10px;
     font-size: 16px;
@@ -51,6 +69,19 @@ h1{
     font-weight: bold;
     text-align: center;
 }
+
+
+@media screen and (max-width: 460px) {
+    .artist-list{
+        margin: 0;
+    }
+
+    .artist-list li{
+        width: -webkit-cal(50% - 20px);
+        width: calc(50% - 20px);
+    }
+}
+
 
 .loader{
     font-size: 12px;

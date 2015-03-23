@@ -48,7 +48,7 @@ var SimilarArtists = React.createClass({
     render: function(){
         return (
             <div className="app">
-                <input type="text" placeholder="Digite uma artista" onKeyUp={this.search} />
+                <input type="text" placeholder="Digite um artista" onKeyUp={this.search} />
                 <p className={this.state.loading ? 'loader show' : 'loader'}>Aguarde...</p>
                 <ArtistList artists={this.state.artists} />
             </div>
