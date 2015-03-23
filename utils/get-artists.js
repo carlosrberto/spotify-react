@@ -1,13 +1,5 @@
-var echojs = require('echojs');
-var SpotifyWebApi = require('spotify-web-api-node');
-var spotify = new SpotifyWebApi({
-  clientId : process.env.SPOTIFY_CLIENT_ID,
-  clientSecret : process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri : 'http://localhost:3000/spotify-callback'
-});
-var echo = echojs({
-    key: process.env.ECHONEST_KEY
-});
+var echo = require('./echo');
+var spotify = require('./spotify');
 
 module.exports = function(req, res) {
     if (!req.query.name) {
@@ -30,10 +22,14 @@ module.exports = function(req, res) {
                 spotify.getArtists(artists).then(function(data) {
                     var artists = data.body.artists.map(function(item){
                         var image = item.images[2] || item.images[1] || item.images[0];
-                        return  {
+
+                        var json = {
                             name: item.name,
-                            image: image
+                            image: image,
+                            id: item.id
                         };
+
+                        return  json;
                     });
                     res.json({
                         status: true,
@@ -41,7 +37,6 @@ module.exports = function(req, res) {
                     });
                 }, function(err) {
                     res.json(err);
-                    console.error(err);
                 });
             } else {
                 res.json({

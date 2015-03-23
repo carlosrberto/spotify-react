@@ -1,8 +1,34 @@
+var Player = new Audio();
+
 var ArtistList = React.createClass({displayName: "ArtistList",
+    play: function(id, event) {
+        var el = event.target;
+        $(el).addClass('loading');
+
+        $.ajax({
+            context: this,
+            url: '/get-artist-track/',
+            data: {
+                id: id
+            }
+        }).done(function(data){
+            if (data.status) {
+                $(this.getDOMNode()).find('li').removeClass('active');
+                $(el).removeClass('loading');
+                $(el).addClass('active');
+                Player.pause();
+                Player.src = data.url;
+                Player.play();
+            } else {
+                alert('Não foi possível reproduzir o áudio!')
+            }
+        });
+    },
+
     render: function(){
         var items = this.props.artists.map(function(item, i) {
             return (
-                React.createElement("li", {key: item.name}, 
+                React.createElement("li", {key: item.name, onClick: this.play.bind(this, item.id)}, 
                     React.createElement("img", {src: item.image ? item.image.url : '', height: "180"}), 
                     React.createElement("p", null, item.name)
                 )
@@ -20,7 +46,7 @@ var SimilarArtists = React.createClass({displayName: "SimilarArtists",
     getInitialState: function() {
         return {
             loading: false,
-            artists: []
+            artists: localStorage.getItem('artists') ? JSON.parse(localStorage.getItem('artists')) : []
         }
     },
 
@@ -29,8 +55,10 @@ var SimilarArtists = React.createClass({displayName: "SimilarArtists",
             this.setState({
                 loading: true
             });
+            localStorage.setItem('last_search', event.target.value);
             $.getJSON('/find-similar/?name='+event.target.value).done(function(data){
                 if (data.status === true) {
+                    localStorage.setItem('artists', JSON.stringify(data.artists));
                     this.setState({
                         artists: data.artists,
                         loading: false
