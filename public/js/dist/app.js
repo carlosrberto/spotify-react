@@ -48,7 +48,7 @@ var SimilarArtists = React.createClass({displayName: "SimilarArtists",
     render: function(){
         return (
             React.createElement("div", {className: "app"}, 
-                React.createElement("input", {type: "text", placeholder: "Digite uma artista", onKeyUp: this.search}), 
+                React.createElement("input", {type: "text", placeholder: "Digite um artista", onKeyUp: this.search}), 
                 React.createElement("p", {className: this.state.loading ? 'loader show' : 'loader'}, "Aguarde..."), 
                 React.createElement(ArtistList, {artists: this.state.artists})
             )
