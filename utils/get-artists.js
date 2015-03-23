@@ -20,17 +20,21 @@ module.exports = function(req, res) {
             });
             if (artists.length) {
                 spotify.getArtists(artists).then(function(data) {
-                    var artists = data.body.artists.map(function(item){
-                        var image = item.images[2] || item.images[1] || item.images[0];
+                    console.log('============', data);
+                    var artists = [];
+                    data.body.artists.forEach(function(item){
+                        if (item) {
+                            var image = item.images[2] || item.images[1] || item.images[0];
 
-                        var json = {
-                            name: item.name,
-                            image: image,
-                            id: item.id
-                        };
-
-                        return  json;
+                            var json = {
+                                name: item.name,
+                                image: image,
+                                id: item.id
+                            };
+                            artists.push(json);
+                        }
                     });
+                    console.log('============', artists);
                     res.json({
                         status: true,
                         artists: artists
