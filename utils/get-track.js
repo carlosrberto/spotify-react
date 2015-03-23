@@ -1,14 +1,15 @@
 var spotify = require('./spotify');
+var randomArray = require('./random-array');
 
 module.exports = function(artistId, succes, error) {
     spotify.getArtistAlbums(artistId)
     .then(function(data) {
         if (data.body.items.length) {
-            var firstAlbum = data.body.items[0];
-            spotify.getAlbumTracks(firstAlbum.id).then(function(data) {
+            var randomAlbum = randomArray(data.body.items);
+            spotify.getAlbumTracks(randomAlbum.id).then(function(data) {
                 if (data.body.items.length) {
                     if (typeof succes === 'function') {
-                        succes(data.body.items[0].preview_url);
+                        succes(randomArray(data.body.items).preview_url);
                     }
                 } else {
                     if (typeof error === 'function') {
