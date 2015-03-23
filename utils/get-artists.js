@@ -20,7 +20,6 @@ module.exports = function(req, res) {
             });
             if (artists.length) {
                 spotify.getArtists(artists).then(function(data) {
-                    console.log('============', data);
                     var artists = [];
                     data.body.artists.forEach(function(item){
                         if (item) {
@@ -34,7 +33,6 @@ module.exports = function(req, res) {
                             artists.push(json);
                         }
                     });
-                    console.log('============', artists);
                     res.json({
                         status: true,
                         artists: artists
